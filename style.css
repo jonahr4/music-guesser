@@ -81,7 +81,17 @@ h1{
     left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
-    padding: 20px;
-    background-color: lightgray; /* Example background color */
-    border-radius: 10px; /* Example border radius */
+    background-color: #00d13f; /* Example background color */
+    border-radius: 20px; /* Example border radius */
+    font-size: 20px;
+}
+
+#start-game-btn{
+    font-size: 40px;
+    text-decoration: none;
+    padding: 30px 50px;
+    background-color: #ffffff00;
+    color: rgb(3, 3, 3);
+    border: none;
+    cursor: pointer;
 }

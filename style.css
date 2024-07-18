@@ -66,6 +66,22 @@ h1{
     text-decoration: none;
     font-size: 25px;
     padding: 10px;
-    color: black;
+    color: rgb(238, 238, 238);
+    background-color: black;
+    border-radius: 15px;
+    border: 5px solid #c6daf033; /* Semi-opaque border */
 
+
+}
+
+/*---Start Button----*/
+#start-btn{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    padding: 20px;
+    background-color: lightgray; /* Example background color */
+    border-radius: 10px; /* Example border radius */
 }

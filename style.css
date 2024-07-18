@@ -84,6 +84,11 @@ h1{
     background-color: #00d13f; /* Example background color */
     border-radius: 20px; /* Example border radius */
     font-size: 20px;
+    transition: 0.5s;
+}
+
+#start-btn:hover {
+    scale: 1.05;
 }
 
 #start-game-btn{
@@ -94,4 +99,57 @@ h1{
     color: rgb(3, 3, 3);
     border: none;
     cursor: pointer;
+    transition: 0.5s;
+}
+
+#start-game-btn:hover {
+    scale: 1.1;
+}
+/*----GAME INTERFACE--*/
+
+.hidden{
+    display: none;
+}
+
+#game-interface {
+    text-align: center;
+    margin: 20px;
+}
+
+#album-cover img {
+    width: 300px;
+    height: 300px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+#audio-controls {
+    margin: 20px 0;
+}
+
+#options {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.option-btn {
+    margin: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    background-color: #333;
+    color: #fff;
+    transition: background-color 0.3s ease;
+}
+
+.option-btn:hover {
+    background-color: #555;
+}
+
+#start-btn {
+    text-align: center;
+    margin-top: 50px;
 }

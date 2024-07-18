@@ -1,4 +1,8 @@
 // script.js
+
+//Import Config for API Keys access
+import config from './config.js';
+
 document.addEventListener('DOMContentLoaded', () => {
     const instructionsBtn = document.getElementById('instructions-btn');
     const overlay = document.getElementById('overlay');
@@ -42,8 +46,8 @@ function startGame() {
 
 //Function to get the top 50 songs from the SPOTIFY API
 async function getTop50Songs(){
-    const clientId = '70a1b72acae74012ba2ade4a50667edc'; // Replace with your client ID
-    const clientSecret = '18421d89fc6b4f7a9dd0d7e2e3c53778'; // Replace with your client secret
+    const clientId = config.clientId; 
+    const clientSecret = config.clientSecret; 
 
     try {
         // Fetch the access token

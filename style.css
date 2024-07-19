@@ -153,3 +153,13 @@ h1{
     text-align: center;
     margin-top: 50px;
 }
+
+
+/*Incorrect and correct buttons */
+.correct{
+    color: #00d13f;
+}
+
+.incorrect{
+    color: #e40909;
+}

@@ -16,7 +16,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const scoreElement = document.getElementById('score');
     const roundElement = document.getElementById('round');
 
-
+    //Initialize these Vars
+    let tracks = [];
+    let score = 0;
+    let round = 1;
+    let choosenAnswer = false;
 
     instructionsBtn.addEventListener('click', (e) => {
         e.preventDefault();
@@ -27,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
         overlay.style.display = 'none';
     });
 
-    // Optional: Hide overlay when clicking outside of it
+    //Hide overlay when clicking outside of it
     window.addEventListener('click', (e) => {
         if (e.target === overlay) {
             overlay.style.display = 'none';
@@ -35,35 +39,25 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Add event listener for the start game button
-    startGameButton.addEventListener('click', () => {
-        startGame();
-
+    startGameButton.addEventListener('click', async () => {
+        // Fetch the tracks before starting the game
+        tracks = await getTop50Songs()
+        
         // Hide Start Button
         startGameButton.style.display = 'none';
 
         // Show Game Interface
         gameInterface.classList.remove('hidden');
+
+        // Start the first round
+        playRound();
     });
-}); 
 
-// Function to start the game
-async function startGame() {
-    console.log("Game started!");
-    const tracks = await getTop50Songs();
-    
-    //for loop for ten rounds
-        //dispay round i / 10
-        //assign track 1,2,3,4  as 4 separate variables, all random tracks from the tracks varaiable (no reapeats)
-        //send cover photo of track 1 to the HTML to display for each round
-        //upload snipit from track 1 to be the music preview
-        //replace the names of option 1 2,3,4 buttons as the names of the tracks from our varibales and randomize the order
-        //make it so if a player clicks on the correct track one track the score increases and the button turns green
-        //if player clicks on the wrong button it turns red and score does not increase
-        //after player clicks the button a next button will aprear under all the other buttons to reset the loop with new songs
-
-    console.log(tracks);
-    let score = 0;
-    let round = 1;
+    // Event listener for the next button
+    nextButton.addEventListener('click', async () => {
+        round++;
+        await playRound();
+    });
 
     // Function to handle each round
     async function playRound() {
@@ -72,8 +66,9 @@ async function startGame() {
             return;
         }
 
+        choosenAnswer = false;
         // Update the round number
-        roundElement.textContent = round;
+        document.querySelector("#round").textContent = round;
 
         // Shuffle tracks and pick four unique tracks
         const shuffledTracks = shuffleArray(tracks);
@@ -107,65 +102,61 @@ async function startGame() {
         });
 
         if (selectedTrack.track.name === correctTrack.track.name) {
-            score++;
-            scoreElement.textContent = score;
+            if(choosenAnswer == false){
+                score++;
+                // Update the score number
+                document.querySelector("#score").textContent = score;
+            }
         }
+
+        choosenAnswer = true;
 
         // Show the next button
         nextButton.classList.remove('hidden');
     }
 
-    // Event listener for the next button
-    nextButton.addEventListener('click', () => {
-        round++;
-        playRound();
-    });
 
-    // Start the first round
-    playRound();
+    //Function to get the top 50 songs from the SPOTIFY API
+    async function getTop50Songs(){
+        const clientId = config.clientId; 
+        const clientSecret = config.clientSecret; 
 
-    //alert("Game started!");
-}
+        try {
+            // Fetch the access token
+            const tokenResponse = await fetch('https://accounts.spotify.com/api/token', {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Basic ' + btoa(clientId + ':' + clientSecret),
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: 'grant_type=client_credentials'
+            });
 
-//Function to get the top 50 songs from the SPOTIFY API
-async function getTop50Songs(){
-    const clientId = config.clientId; 
-    const clientSecret = config.clientSecret; 
+            const tokenData = await tokenResponse.json();
+            const accessToken = tokenData.access_token;
 
-    try {
-        // Fetch the access token
-        const tokenResponse = await fetch('https://accounts.spotify.com/api/token', {
-            method: 'POST',
-            headers: {
-                'Authorization': 'Basic ' + btoa(clientId + ':' + clientSecret),
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            body: 'grant_type=client_credentials'
-        });
+            // Fetch the top 50 songs
+            const playlistId = '37i9dQZEVXbLRQDuF5jeBp'; //ID for US top 50 songs
+            const response = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`
+                }
+            });
 
-        const tokenData = await tokenResponse.json();
-        const accessToken = tokenData.access_token;
-
-        // Fetch the top 50 songs
-        const playlistId = '37i9dQZEVXbLRQDuF5jeBp'; //ID for US top 50 songs
-        const response = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
-            headers: {
-                'Authorization': `Bearer ${accessToken}`
-            }
-        });
-
-        const data = await response.json();
-        return data.items;
-    } catch (error) {
-        console.error('Error fetching the top 50 songs:', error);
+            const data = await response.json();
+            return data.items;
+        } catch (error) {
+            console.error('Error fetching the top 50 songs:', error);
+        }
     }
-}
 
- // Utility function to shuffle an array
- function shuffleArray(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
+    // Utility function to shuffle an array
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
     }
-    return array;
-}
+
+}); 

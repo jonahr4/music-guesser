@@ -9,18 +9,23 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeBtn = document.getElementById('close-btn');
     const startGameButton = document.getElementById('start-game-btn')
     const gameInterface = document.getElementById('game-interface');
+    const albumCover = document.getElementById('album-cover');
     const coverImage = document.getElementById('cover-image');
     const audioPlayer = document.getElementById('audio-player');
     const optionButtons = document.querySelectorAll('.option-btn');
     const nextButton = document.getElementById('next-btn');
+    const retryButton = document.getElementById('retry-btn');
     const scoreElement = document.getElementById('score');
     const roundElement = document.getElementById('round');
 
+
     //Initialize these Vars
     let tracks = [];
+    let highscore = 0;
     let score = 0;
     let round = 1;
     let choosenAnswer = false;
+
 
     instructionsBtn.addEventListener('click', (e) => {
         e.preventDefault();
@@ -37,6 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
             overlay.style.display = 'none';
         }
     });
+
 
     // Add event listener for the start game button
     startGameButton.addEventListener('click', async () => {
@@ -59,12 +65,30 @@ document.addEventListener('DOMContentLoaded', () => {
         await playRound();
     });
 
+    // Event listener for the retry button
+    retryButton.addEventListener('click', async () => {
+        round=0;
+        document.querySelector("#round").textContent = round;
+        score=0;
+        document.querySelector("#score").textContent = score;
+        await playRound();
+    });
+
     // Function to handle each round
     async function playRound() {
         if (round > 10) {
-            alert(`Game over! Your final score is ${score}.`);
+            alert("Congrats you got a score of "+score);
+            retryButton.classList.remove('hidden');
+            nextButton.classList.add('hidden');
             return;
         }
+
+        //reblur album cover
+        albumCover.classList.add('blur');
+
+        //rehide retry btn
+        retryButton.classList.add('hidden');
+
 
         choosenAnswer = false;
         // Update the round number
@@ -78,6 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Update the UI with the correct track's details
         coverImage.src = correctTrack.track.album.images[0].url;
         audioPlayer.src = correctTrack.track.preview_url;
+        console.log(correctTrack.track.preview_url);
 
         // Shuffle options and set button texts
         const shuffledOptions = shuffleArray(options);
@@ -85,6 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
             btn.textContent = shuffledOptions[index].track.name;
             btn.onclick = () => checkAnswer(shuffledOptions[index], correctTrack);
             btn.className = 'option-btn'; // Reset button styles
+            
         });
 
         // Hide the next button initially
@@ -93,6 +119,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Function to check the answer
     function checkAnswer(selectedTrack, correctTrack) {
+
+        //when clicked remove album cover blur
+        albumCover.classList.remove('blur');
+
+
         optionButtons.forEach((btn) => {
             if (btn.textContent === correctTrack.track.name) {
                 btn.classList.add('correct');
@@ -105,7 +136,12 @@ document.addEventListener('DOMContentLoaded', () => {
             if(choosenAnswer == false){
                 score++;
                 // Update the score number
+                if(score>highscore){
+                    highscore = score;
+                }
                 document.querySelector("#score").textContent = score;
+                document.querySelector("#highscore").textContent = highscore;
+
             }
         }
 

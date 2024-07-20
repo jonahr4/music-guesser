@@ -10,7 +10,7 @@
 <div id="header">
     <div class="container">
         <nav>
-            <h1>Music Lyrics Guesser by Jonah Rothman</h1>
+            <h1>Music Guesser by Jonah Rothman</h1>
             <a href="#" id="instructions-btn">Instructions</a>
         </nav>
     </div>
@@ -26,10 +26,11 @@
 
 <div id="game-interface" class="hidden">
     <div id="score-counter">
-        <h1>Score: <span id="score">0</span></h1>
+        <h1>High Score: <span id="highscore">0</span></h1>
+        <h2>Score: <span id="score">0</span></h2>
         <h2>Round: <span id="round">1</span>/10</h2>
     </div>
-    <div id="album-cover">
+    <div id="album-cover" class="blur">
         <img id="cover-image" src="" alt="Loading Error">
     </div>
     <div id="audio-controls">
@@ -41,7 +42,8 @@
         <button class="option-btn" id="option3">Option 3</button>
         <button class="option-btn" id="option4">Option 4</button>
     </div>
-    <button id="next-btn" class="hidden">Next</button>
+    <button id="next-btn" class="hidden btn">Next</button>
+    <button id="retry-btn" class="hidden btn">Retry</button>
 
 </div>
 

@@ -21,7 +21,8 @@ nav {
 }
 
 #header{
-    background: #c6daf0;
+    /*background: #c6daf0;*/
+    background: #9c9c9c;
 }
 
 h1{
@@ -29,6 +30,29 @@ h1{
     padding: 10px;
     color: black;
     
+}
+
+#sidemenu{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 50px;
+    list-style-type: none;
+}
+
+#spotify-btn{
+    background: black;
+    color: #fff;
+    font-size: 23px;
+    padding: 7px;
+    border-radius: 15px;
+    border: 5px solid black; /* Semi-opaque border */
+    transition: 0.5s;
+}
+
+#spotify-btn:hover{
+    color: #1db954;
+    scale: 1.1
 }
 
 .overlay {
@@ -69,9 +93,13 @@ h1{
     color: rgb(238, 238, 238);
     background-color: black;
     border-radius: 15px;
-    border: 5px solid #c6daf033; /* Semi-opaque border */
+    border: 5px solid black; /* Semi-opaque border */
+    transition: 0.5s;
+}
 
-
+#instructions-btn:hover{
+    color: #1db954;
+    scale: 1.1
 }
 
 .btn {

@@ -96,9 +96,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Shuffle tracks and pick four unique tracks
         const shuffledTracks = shuffleArray(tracks);
-        const options = shuffledTracks.slice(0, 4);
+
+        // Remove tracks with invalid preview URLs and ensure duration is >= 15 seconds (15000 milliseconds)
+        const filteredTracks = shuffledTracks.filter(track => 
+            track.track.preview_url && 
+            track.track.preview_url !== "" &&
+            track.track.duration_ms >= 15000
+        );
+
+        console.log(`Tracks remaining after filtering: ${filteredTracks.length}`);
+
+        if (filteredTracks.length < 4) {
+            console.error("Not enough tracks with valid preview URLs and duration.");
+            return;
+        }
+
+        const options = filteredTracks.slice(0, 4);
         const correctTrack = options[0];
 
+
+        
         // Update the UI with the correct track's details
         coverImage.src = correctTrack.track.album.images[0].url;
         audioPlayer.src = correctTrack.track.preview_url;
@@ -172,7 +189,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const accessToken = tokenData.access_token;
 
             // Fetch the top 50 songs
-            const playlistId = '37i9dQZEVXbLRQDuF5jeBp'; //ID for US top 50 songs
+            //const playlistId = '37i9dQZEVXbLRQDuF5jeBp'; //ID for US top 50 songs
+            const playlistId ='6UeSakyzhiEt4NB3UAd6NQ';//ID for billboard top 100
             const response = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
                 headers: {
                     'Authorization': `Bearer ${accessToken}`
@@ -180,6 +198,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             const data = await response.json();
+            console.log(data.items);
             return data.items;
         } catch (error) {
             console.error('Error fetching the top 50 songs:', error);

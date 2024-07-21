@@ -7,7 +7,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const instructionsBtn = document.getElementById('instructions-btn');
     const overlay = document.getElementById('overlay');
     const closeBtn = document.getElementById('close-btn');
-    const startGameButton = document.getElementById('start-game-btn')
+    const startGameButton = document.getElementById('start-game-btn');
+    const startBtnWrapper = document.querySelector('.start-btn-wrapper');
     const gameInterface = document.getElementById('game-interface');
     const albumCover = document.getElementById('album-cover');
     const coverImage = document.getElementById('cover-image');
@@ -50,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
         tracks = await getTop50Songs()
         
         // Hide Start Button
-        startGameButton.style.display = 'none';
+        startBtnWrapper.style.display = 'none';
 
         // Show Game Interface
         gameInterface.classList.remove('hidden');

@@ -60,6 +60,26 @@ h1{
     scale: 1.1
 }
 
+
+#playlist-btn{
+    align-items: center;
+    gap: 10px; /* space between the icon and text */
+    background: black;
+    color: #fff;
+    font-size: 23px;
+    padding: 7px;
+    border-radius: 15px;
+    border: 5px solid black; /* Semi-opaque border */
+    transition: 0.5s;
+    margin-right: -35px;
+
+}
+
+#playlist-btn:hover{
+    color: #1db954;
+    scale: 1.1
+}
+
 .overlay {
     position: fixed;
     top: 0;
@@ -240,7 +260,7 @@ h1{
 
 
 /* For small screens */
-@media only screen and (max-width:700px) {
+@media only screen and (max-width:850px) {
     #album-cover img {
         width: 190px;
         height: 190px;
@@ -273,6 +293,17 @@ h1{
         background: black;
         color: #fff;
         font-size: 30px;
+        padding: 7px;
+        border-radius: 15px;
+        border: 5px solid black; /* Semi-opaque border */
+        transition: 0.5s;
+        margin-right: -35px;
+    }
+
+    #playlist-btn{
+        background: black;
+        color: #fff;
+        font-size: 18px;
         padding: 7px;
         border-radius: 15px;
         border: 5px solid black; /* Semi-opaque border */

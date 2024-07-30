@@ -26,70 +26,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let score = 0;
     let round = 1;
     let choosenAnswer = false;
-    let authorizationCode = null;
-    let accessToken = null;
 
 
-    //----- SPOTIFY BUTTON FUNCTIONALITY ----
-    document.getElementById('spotify-btn').addEventListener('click', () => {
-        // User sign in
-        const clientId = config.clientId;
-        const redirectUri = 'http://127.0.0.1:5500/music-guesser/'; // ONLY FOR DEV
-        const scopes = 'user-read-private user-read-email';
-
-        const url = `https://accounts.spotify.com/authorize?client_id=${clientId}&response_type=code&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${encodeURIComponent(scopes)}`;
-        window.location.href = url;
-    });
-
-    // Extract the authorization code from the URL and exchange it for an access token
-    const urlParams = new URLSearchParams(window.location.search);
-    authorizationCode = urlParams.get('code');
-
-    if (authorizationCode && !accessToken) {
-        const clientId = config.clientId;
-        const clientSecret = config.clientSecret;
-        const redirectUri = 'http://127.0.0.1:5500/music-guesser/'; // ONLY FOR DEV
-
-        const authString = `${clientId}:${clientSecret}`;
-        const authHeader = btoa(authString);
-
-        fetch('https://accounts.spotify.com/api/token', {
-            method: 'POST',
-            headers: {
-                'Authorization': `Basic ${authHeader}`,
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            body: `grant_type=authorization_code&code=${authorizationCode}&redirect_uri=${encodeURIComponent(redirectUri)}`
-        })
-        .then(response => response.json())
-        .then(data => {
-            accessToken = data.access_token;
-            console.log('Access Token:', accessToken);
-            // Now you can use the access token to make Spotify API calls
-            // Save the access token in localStorage or a cookie if needed
-            localStorage.setItem('spotifyAccessToken', accessToken);
-
-
-            //Display playlist BTN
-            document.getElementById('playlist-btn').classList.remove('hidden')
-
-            window.history.replaceState({}, document.title, window.location.pathname); // Clean the URL
-        })
-        .catch(error => {
-            console.error('Error exchanging authorization code:', error);
-        });
-    }
-
-
-    //---------- Playlists Button ----------
-    document.getElementById('playlist-btn').addEventListener('click', (e) => {
-        e.preventDefault();
-        overlay.style.display = 'flex';
-    });
-
-
-
-    //----- INSTRUCTIONS BUTTON FUNCTIONALITY -----
     instructionsBtn.addEventListener('click', (e) => {
         e.preventDefault();
         overlay.style.display = 'flex';
